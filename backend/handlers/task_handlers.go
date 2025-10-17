@@ -8,16 +8,14 @@ import (
 
 	"task-tracker-demo/backend/database"
 	"task-tracker-demo/backend/models"
-    "task-tracker-demo/backend/utils"
+	"task-tracker-demo/backend/utils"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// PostTask handles the submission of a new task (POST /api/tasks)
 func PostTask(w http.ResponseWriter, r *http.Request) {
-    // Handle OPTIONS request
-    if r.Method == "OPTIONS" {
-        utils.RespondWithJSON(w, http.StatusOK, nil)
+	if r.Method == "OPTIONS" {
+		utils.RespondWithJSON(w, http.StatusOK, nil)
 		return
 	}
 
@@ -31,7 +29,7 @@ func PostTask(w http.ResponseWriter, r *http.Request) {
 	task.Status = "Open"
 	task.CreatedAt = time.Now()
 
-	collection := database.GetCollection("tasks") 
+	collection := database.GetCollection("tasks")
 	_, err := collection.InsertOne(context.Background(), task)
 	if err != nil {
 		utils.RespondWithError(w, http.StatusInternalServerError, "Failed to insert task")
